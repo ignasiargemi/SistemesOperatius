@@ -93,7 +93,7 @@ int main() {
   	}
 
   	//Enunci del guanyador
-  	if (jugador1 == 3 and jugador2 == 3) printf("Hi ha hagut un empat!\n");
+  	if (jugador1 == 3 && jugador2 == 3) printf("Hi ha hagut un empat!\n");
   	else if (jugador1 > jugador2) printf("Ha guanyat el jugador 1!\n");
   	else printf("Ha guanyat el jugador 2!\n");
 

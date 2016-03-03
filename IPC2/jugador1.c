@@ -7,19 +7,66 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include <semaphore.h>
-#include <string.h>
-
-int main() {
-	int 	file_write,file_read,n;
-	int 	input;
-	char 	buffer[10+2];
-	int 	numero_linea_entrada=0;
-	sem_t* 	e1;
-	sem_t*	l1;
-	int 	valor_semaforo;
-
-	int jug1 = open("jug1.txt", O_WRONLY|O_CREAT|O_TRUNC, 0644);
 
 
+void err_sys(const char* cadena)
+{
+	perror(cadena);
+	exit(1);
+} 
 
+
+int main()
+{
+	int 	jug1;
+	sem_t* 	JA1;
+	sem_t*	AJ1;	
+	int 	juagador1, jugador2;
+	int     tirada, suma;
+
+
+	if ((JA1 = (sem_t*)sem_open("/JA1", 0)) == SEM_FAILED) {
+    	err_sys("semaphore initilization");
+  	}
+  	if ((AJ1 = (sem_t*)sem_open("/AJ1", 0)) == SEM_FAILED) {
+    	err_sys("semaphore initilization");
+  	}
+
+  	if ((jug1=open("./jugador1.txt",O_WRONLY|O_CREAT|O_TRUNC,0700)) < 0)
+		err_sys("error de fitxer sortida");
+
+	sem_post(JA1);
+
+	close(jug1);
+
+
+	while(1){
+		sem_wait(AJ1);
+		jug1 = open("./jugador1.txt", O_WRONLY|O_RDONLY, 0700);
+		nbytes = read(b[0], &buffer, sizeof(buffer));
+		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
+		do{
+			printf("Escriu el valor que creguis convenient:\n(0-3)\n");
+			scanf("%d",&tirada);
+
+		}while(tirada>3 && tirada < 0);
+
+		write(jug1,&tirada,sizeof(tirada));
+
+		do {
+			printf("Quina es la teva suma:\n(0-6)\n");
+			scanf("%d",suma);
+		}while (suma < 0 && suma > 6);
+		
+		write(jug1,&suma,sizeof(int));
+		
+		close(jug1);
+
+		sem_post(JA1);
+	}
+
+	if (close(jug1)!=0) err_sys("error close write");
+	
+	exit(0);
+	return 0;
 }
