@@ -18,10 +18,10 @@ void err_sys(const char* cadena)
 
 int main()
 {
-	int 	jug1;
+	int 	jug1,llegeix;
 	sem_t* 	JA1;
 	sem_t*	AJ1;	
-	int 	juagador1, jugador2;
+	int 	jugador1, jugador2;
 	int     tirada, suma;
 
 
@@ -43,7 +43,8 @@ int main()
 	while(1){
 		sem_wait(AJ1);
 		jug1 = open("./jugador1.txt", O_WRONLY|O_RDONLY, 0700);
-		nbytes = read(b[0], &buffer, sizeof(buffer));
+		llegeix = read(jug1, &jugador1, sizeof(jugador1));
+		llegeix = read(jug1, &jugador2, sizeof(jugador2));
 		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
 		do{
 			printf("Escriu el valor que creguis convenient:\n(0-3)\n");
@@ -55,7 +56,7 @@ int main()
 
 		do {
 			printf("Quina es la teva suma:\n(0-6)\n");
-			scanf("%d",suma);
+			scanf("%d",&suma);
 		}while (suma < 0 && suma > 6);
 		
 		write(jug1,&suma,sizeof(int));
@@ -66,6 +67,8 @@ int main()
 	}
 
 	if (close(jug1)!=0) err_sys("error close write");
+	if (sem_close(AJ1)!=0) err_sys("error eliminacio semafor");
+	if (sem_close(JA1)!=0) err_sys("error eliminacio semafor");
 	
 	exit(0);
 	return 0;
