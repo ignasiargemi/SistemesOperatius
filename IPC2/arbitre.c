@@ -25,6 +25,8 @@ int main() {
 	sem_t*	JA2;
 	int jugador1=0;
 	int jugador2=0;
+	int suma1, tirada1;
+	int suma2, tirada2;
 
 	if ((AJ1 = (sem_t*)sem_open("/AJ1", O_CREAT, 0644, 0)) == SEM_FAILED) {
     	err_sys("semaphore initilization");
@@ -64,13 +66,36 @@ int main() {
 
   	while (1) {
   		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
+  		jug1 = open("jug1.txt", O_WRONLY|O_TRUNC, 0644);
+		jug2 = open("jug2.txt", O_WRONLY|O_TRUNC, 0644);
   		sem_wait(JA1);
   		//Read
+  		read(jug1, &tirada1, sizeof(tirada1));
+		read(jug1, &suma1, sizeof(suma1));
   		sem_wait(JA2);
   		//Read
+  		read(jug2, &tirada2, sizeof(tirada2));
+		read(jug2, &suma2, sizeof(suma2));
 
+  		if ((tirada1+tirada2) == suma1) ++jugador1;
+  		if ((tirada1+tirada2) == suma2) ++jugador2;
 
+		write(jug1, &jugador1, jugador1);
+		write(jug1, &jugador2, jugador2);
+		write(jug2, &jugador1, jugador1);
+		write(jug2, &jugador2, jugador2);
+
+		close(jug1);
+	  	close(jug2);
+
+	  	sem_post(AJ1);
+	  	sem_post(AJ2);
   	}
+
+  	//Enunci del guanyador
+  	if (jugador1 == 3 and jugador2 == 3) printf("Hi ha hagut un empat!\n");
+  	else if (jugador1 > jugador2) printf("Ha guanyat el jugador 1!\n");
+  	else printf("Ha guanyat el jugador 2!\n");
 
 	//Close
 	if (sem_close(AJ1)!=0) err_sys("error eliminacio semafor");
@@ -78,4 +103,5 @@ int main() {
 	if (sem_close(JA1)!=0) err_sys("error eliminacio semafor");
 	if (sem_close(JA2)!=0) err_sys("error eliminacio semafor");
 	printf("Final\n");
+	exit(0);
 }
