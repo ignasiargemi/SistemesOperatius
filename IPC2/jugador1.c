@@ -14,9 +14,11 @@ int main() {
 	int 	input;
 	char 	buffer[10+2];
 	int 	numero_linea_entrada=0;
-	sem_t* 	psemafor_anada;
-	sem_t*	psemafor_tornada;	
+	sem_t* 	e1;
+	sem_t*	l1;
 	int 	valor_semaforo;
+
+	int jug1 = open("jug1.txt", O_WRONLY|O_CREAT|O_TRUNC, 0644);
 
 
 

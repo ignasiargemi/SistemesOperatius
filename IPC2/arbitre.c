@@ -14,9 +14,14 @@ int main() {
 	int 	input;
 	char 	buffer[10+2];
 	int 	numero_linea_entrada=0;
-	sem_t* 	psemafor_anada;
-	sem_t*	psemafor_tornada;	
-	int 	valor_semaforo;
+	sem_t* 	e1;
+	sem_t*	e2;
+	sem_t* 	l1;
+	sem_t*	l2;
+	int jugador1=0;
+	int jugador2=0;
+
+	
 
 
 
