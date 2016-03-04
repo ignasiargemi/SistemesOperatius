@@ -42,11 +42,16 @@ int main()
 
 	while(1){
 		sem_wait(AJ2);
-		jug2 = open("./jugador2.txt", O_WRONLY|O_RDONLY, 0700);
+		jug2 = open("./jugador2.txt", O_RDONLY, 0);
 		read(jug2, &jugador1, sizeof(jugador1));
 		read(jug2, &jugador2, sizeof(jugador2));
-		printf("Marcador: %i - ",&jugador1);
-		printf("%i\n",&jugador2);
+		close(jug2);
+		printf("Marcador: %i - ",jugador1);
+		printf("%i\n",jugador2);
+
+
+		jug2 = open("./jugador2.txt", O_WRONLY, 0700);
+
 		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
 		do{
 			printf("Escriu el valor de la teva tirada:\n(0-3)\n");
@@ -71,8 +76,8 @@ int main()
 	}
 
 	if (close(jug2)!=0) err_sys("error close write");
-	if (sem_close(AJ2)!=0) err_sys("error eliminacio semafor");
-	if (sem_close(JA2)!=0) err_sys("error eliminacio semafor");
+	if (sem_close(AJ2)!=0) err_sys("error eliminació semàfor");
+	if (sem_close(JA2)!=0) err_sys("error eliminació semàfor");
 	
 	exit(0);
 }
