@@ -104,6 +104,6 @@ int main() {
 	if (sem_close(AJ2)!=0) err_sys("error eliminacio semafor");
 	if (sem_close(JA1)!=0) err_sys("error eliminacio semafor");
 	if (sem_close(JA2)!=0) err_sys("error eliminacio semafor");
-	printf("Final\n");
+	printf("Final de l'arbitre!\n");
 	exit(0);
 }

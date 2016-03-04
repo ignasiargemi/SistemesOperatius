@@ -49,10 +49,8 @@ int main()
 		printf("Marcador: %i - ",jugador1);
 		printf("%i\n",jugador2);
 
-
+		if (jugador1 >= 3 || jugador2 >= 3) break;
 		jug2 = open("./jugador2.txt", O_WRONLY, 0700);
-
-		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
 		do{
 			printf("Escriu el valor de la teva tirada:\n(0-3)\n");
 			scanf("%i",&tirada);
@@ -62,7 +60,7 @@ int main()
 		write(jug2,&tirada,sizeof(tirada));
 
 		do {
-			printf("Quina es la teva suma:\n(0-6)\n");
+			printf("Quina es la teva suma/aposta:\n(0-6)\n");
 			scanf("%i",&suma);
 		}while (suma < 0 || suma > 6);
 		
@@ -74,8 +72,7 @@ int main()
 
 		sem_post(JA2);
 	}
-
-	if (close(jug2)!=0) err_sys("error close write");
+	printf("Final Jugador 2!\n");
 	if (sem_close(AJ2)!=0) err_sys("error eliminació semàfor");
 	if (sem_close(JA2)!=0) err_sys("error eliminació semàfor");
 	
