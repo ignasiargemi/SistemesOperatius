@@ -45,23 +45,25 @@ int main()
 		jug2 = open("./jugador2.txt", O_WRONLY|O_RDONLY, 0700);
 		llegeix = read(jug2, &jugador1, sizeof(jugador1));
 		llegeix = read(jug2, &jugador2, sizeof(jugador2));
-		printf("%s -",jugador1);
-		printf("%s\n",jugador2);
+		printf("Marcador: %i - ",&jugador1);
+		printf("%i\n",&jugador2);
 		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
 		do{
-			printf("Escriu el valor que creguis convenient:\n(0-3)\n");
-			scanf("%d",&tirada);
+			printf("Escriu el valor de la teva tirada:\n(0-3)\n");
+			scanf("%i",&tirada);
 
-		}while(tirada>3 && tirada < 0);
+		}while(tirada>3 || tirada < 0);
 
 		write(jug2,&tirada,sizeof(tirada));
 
 		do {
 			printf("Quina es la teva suma:\n(0-6)\n");
-			scanf("%d",&suma);
-		}while (suma < 0 && suma > 6);
+			scanf("%i",&suma);
+		}while (suma < 0 || suma > 6);
 		
 		write(jug2,&suma,sizeof(int));
+
+		printf("Tirada: %i - Suma: %i\n", tirada, suma);
 		
 		close(jug2);
 
@@ -73,5 +75,4 @@ int main()
 	if (sem_close(JA2)!=0) err_sys("error eliminacio semafor");
 	
 	exit(0);
-	return 0;
 }

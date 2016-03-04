@@ -18,7 +18,7 @@ void err_sys(const char* cadena)
 
 int main()
 {
-	int 	jug1,llegeix;
+	int 	jug1;
 	sem_t* 	JA1;
 	sem_t*	AJ1;	
 	int 	jugador1, jugador2;
@@ -43,23 +43,27 @@ int main()
 	while(1){
 		sem_wait(AJ1);
 		jug1 = open("./jugador1.txt", O_WRONLY|O_RDONLY, 0700);
-		llegeix = read(jug1, &jugador1, sizeof(jugador1));
-		llegeix = read(jug1, &jugador2, sizeof(jugador2));
-		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
+		read(jug1, &jugador1, sizeof(jugador1));
+		read(jug1, &jugador2, sizeof(jugador2));
+		printf("Marcador: %i - ",&jugador1);
+		printf("%i\n",&jugador2);
+		if (jugador1 >= 3 || jugador2 >= 3) exit(0); //Final
 		do{
-			printf("Escriu el valor que creguis convenient:\n(0-3)\n");
-			scanf("%d",&tirada);
+			printf("Escriu el valor de la teva tirada:\n(0-3)\n");
+			scanf("%i",&tirada);
 
-		}while(tirada>3 && tirada < 0);
+		}while(tirada>3 || tirada < 0);
 
 		write(jug1,&tirada,sizeof(tirada));
 
 		do {
-			printf("Quina es la teva suma:\n(0-6)\n");
-			scanf("%d",&suma);
-		}while (suma < 0 && suma > 6);
+			printf("Quina es la teva suma/aposta:\n(0-6)\n");
+			scanf("%i",&suma);
+		}while (suma < 0 || suma > 6);
 		
 		write(jug1,&suma,sizeof(int));
+
+		printf("Tirada: %i - Suma: %i\n", tirada, suma);
 		
 		close(jug1);
 
@@ -71,5 +75,4 @@ int main()
 	if (sem_close(JA1)!=0) err_sys("error eliminacio semafor");
 	
 	exit(0);
-	return 0;
 }
