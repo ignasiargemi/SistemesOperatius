@@ -61,7 +61,7 @@ int main()
 			scanf("%i",&suma);
 		}while (suma < 0 || suma > 6);
 		
-		write(jug1,&suma,sizeof(int));
+		write(jug1,&suma,sizeof(suma));
 
 		printf("Tirada: %i - Suma: %i\n", tirada, suma);
 		

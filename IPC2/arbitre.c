@@ -43,13 +43,12 @@ int main() {
   	sem_wait(JA1);
   	printf("Jugador 1 a punt\n");
 
-  	jug1 = open("jug1.txt", O_WRONLY|O_TRUNC, 0644);
+  	jug1 = open("jugador1.txt", O_WRONLY|O_TRUNC, 0644);
 
   	sem_wait(JA2);
   	printf("Jugador 2 a punt\n");
 
-  	jug2 = open("jug2.txt", O_WRONLY|O_TRUNC, 0644);
-
+  	jug2 = open("jugador2.txt", O_WRONLY|O_TRUNC, 0644);
   	write(jug1, &jugador1, jugador1);
   	write(jug1, &jugador2, jugador2);
 
@@ -65,8 +64,8 @@ int main() {
   	while (1) {
   		printf("El marcador és de %i a %i\n",jugador1,jugador2);
   		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
-  		jug1 = open("jug1.txt", O_WRONLY|O_RDONLY, 0644);
-		jug2 = open("jug2.txt", O_WRONLY|O_RDONLY, 0644);
+  		jug1 = open("jugador1.txt", O_WRONLY|O_RDONLY, 0644);
+		jug2 = open("jugador2.txt", O_WRONLY|O_RDONLY, 0644);
   		sem_wait(JA1);
   		//Read
   		read(jug1, &tirada1, sizeof(tirada1));

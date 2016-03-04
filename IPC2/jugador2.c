@@ -18,7 +18,7 @@ void err_sys(const char* cadena)
 
 int main()
 {
-	int 	jug2,llegeix;
+	int 	jug2;
 	sem_t* 	JA2;
 	sem_t*	AJ2;	
 	int 	jugador1, jugador2;
@@ -43,8 +43,8 @@ int main()
 	while(1){
 		sem_wait(AJ2);
 		jug2 = open("./jugador2.txt", O_WRONLY|O_RDONLY, 0700);
-		llegeix = read(jug2, &jugador1, sizeof(jugador1));
-		llegeix = read(jug2, &jugador2, sizeof(jugador2));
+		read(jug2, &jugador1, sizeof(jugador1));
+		read(jug2, &jugador2, sizeof(jugador2));
 		printf("Marcador: %i - ",&jugador1);
 		printf("%i\n",&jugador2);
 		if (jugador1 >= 3 || jugador2 >= 3) exit(0);
@@ -61,7 +61,7 @@ int main()
 			scanf("%i",&suma);
 		}while (suma < 0 || suma > 6);
 		
-		write(jug2,&suma,sizeof(int));
+		write(jug2,&suma,sizeof(suma));
 
 		printf("Tirada: %i - Suma: %i\n", tirada, suma);
 		
