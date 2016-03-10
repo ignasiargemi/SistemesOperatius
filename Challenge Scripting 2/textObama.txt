@@ -9,13 +9,13 @@ EXECUTIVE ORDER
 
 CREATING A NATIONAL STRATEGIC COMPUTING INITIATIVE
 
- 
+
 
 By the authority vested in me as President by the Constitution and the laws of the United States of America, and to maximize benefits of high-performance computing (HPC) research, development, and deployment, it is hereby ordered as follows:
 
 Section 1.  Policy.  In order to maximize the benefits of HPC for economic competitiveness and scientific discovery, the United States Government must create a coordinated Federal strategy in HPC research, development, and deployment.  Investment in HPC has contributed substantially to national economic prosperity and rapidly accelerated scientific discovery.  Creating and deploying technology at the leading edge is vital to advancing my Administration's priorities and spurring innovation.  Accordingly, this order establishes the National Strategic Computing Initiative (NSCI).  The NSCI is a whole-of-government effort designed to create a cohesive, multi-agency strategic vision and Federal investment strategy, executed in collaboration with industry and academia, to maximize the benefits of HPC for the United States.
 
- Over the past six decades, U.S. computing capabilities have been maintained through continuous research and the development and deployment of new computing systems with rapidly increasing performance on applications of major significance to government, industry, and academia.  Maximizing the benefits of HPC in the coming decades will require an effective national response to increasing demands for computing power, emerging technological challenges and opportunities, and growing economic dependency on and competition with other nations.  This national response will require a cohesive, strategic effort within the Federal Government and a close collaboration between the public and private sectors.
+Over the past six decades, U.S. computing capabilities have been maintained through continuous research and the development and deployment of new computing systems with rapidly increasing performance on applications of major significance to government, industry, and academia.  Maximizing the benefits of HPC in the coming decades will require an effective national response to increasing demands for computing power, emerging technological challenges and opportunities, and growing economic dependency on and competition with other nations.  This national response will require a cohesive, strategic effort within the Federal Government and a close collaboration between the public and private sectors.
 
 It is the policy of the United States to sustain and enhance its scientific, technological, and economic leadership position in HPC research, development, and deployment through a coordinated Federal strategy guided by four principles:
 
@@ -68,6 +68,6 @@ the functions of the Director of OMB relating to budgetary, administrative, or l
 
 (c)    This order is not intended to, and does not, create any right or benefit, substantive or procedural, enforceable at law or in equity by any party against the United States, its departments, agencies, or entities, its officers, employees, or agents, or any other person.
 
- 
+
 
 BARACK OBAMA 
