@@ -1,14 +1,10 @@
-# OPERACIO 1: Numero de linies del document: NUM
-#OPERACIO 2: Numero de paraules del document:NUM
-#OPERACIO 3: Numero promig de paraules per linea del document:NUM
-#Generar un histograma, amb les vegades que tenim numero de paraules per linies del document,
-# indicant quantes linies tenen cada numero
-#Finalment haurem de triar una forma grafica de representar aquest histograma
-
 import pygal
-#!/usr/bin/env python
-# -*- coding: 850 -*-
-# -*- coding: utf-8 -*-
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+from os import path
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
 
 fitxer = open("textObama.txt", "r")
 fitxerOut = open("obama.OUT.txt","w")
@@ -21,6 +17,7 @@ longitud=0
 paraulesXlinia = []
 lin = 1
 numpar = 0
+longXpar = {}
 for linia in fitxer.readlines():
     if len(linia)>2:
     	numpar = 0
@@ -53,6 +50,11 @@ for linia in fitxer.readlines():
                         diccionari[lletra]=1
 
             longitud= longitud + len(paraula)
+            if longXpar.has_key(len(paraula)):
+                longXpar[len(paraula)] += 1
+            else:
+                longXpar.get(len(paraula))
+                longXpar[len(paraula)] = 1
 
             if diccionarip.has_key(paraula):
 
@@ -65,20 +67,18 @@ for linia in fitxer.readlines():
         numparaules = numparaules + len(linia.split(" "))
         paraulesXlinia.append([lin, numpar])
         lin+=1
-'''
-for i in paraulesXlinia:
-	print("Num de linia: " + str(i[0]) + " num de paraules " + str(i[1]))
-    '''
+
 #Transformacio de les dades
+vecLongPar = []
+for key, value in longXpar.iteritems():
+    vecLongPar.append([key,value])
+
 llet = []
 for key, value in diccionari.iteritems():
-	#print("Clau: " + str(key) + " Valor: " + str(value))
 	llet.append([key,value])
 
-#print("\nParaules")
 par = []
 for key, value in diccionarip.iteritems():
-	#print("Clau: " + str(key) + "\t\tValor: " + str(value))
 	par.append([key,value])
 
 
@@ -92,7 +92,7 @@ fitxerOut.write("2. Numero de paraules del document: "+str(numparaules)+ '\n\n')
 
 fitxerOut.write("3. Mitjana de paraules per linia: "+str(mitpar)+ '\n\n')
 
-histogram = pygal.Bar()
+histogram = pygal.Bar(title='Paraules per linia')
 for x in paraulesXlinia:
     histogram.add("Linia " + str(x[0]),x[1])
 histogram.render_in_browser()
@@ -108,19 +108,37 @@ histLletres = pygal.Bar(title='Caracters utilitzats en el text')
 for val in llet:
 	k = val[0]
 	v = val[1]
-	histLletres.add(k, v)
+	histLletres.add(str(k), v)
 histLletres.render_in_browser()
 
-fitxerOut.write("\n5. Promig de longitud de paraules en el document: ")
-fitxerOut.write(str(mitlon)+ "\n")
+fitxerOut.write("\n5. Promig de longitud de paraules en el document: " + str(mitjanaCaracXPar)+ "\n")
+
+histLong = pygal.Bar(title='Longitud de les paraules')
+for val in vecLongPar:
+    k = val[0]
+    v = val[1]
+    histLong.add(str(k), v)
+histLong.render_in_browser()
 
 fitxerOut.write("\n6. Promig de paraules en el document:\n")
 for key, value in diccionarip.iteritems():
-    fitxerOut.write("Paraula: " + str(key) + "\tValor: " + str(value) + "\n")
-'''
-fitxerOut.write(str(diccionarip.keys()))
-fitxerOut.write("\n" + str(diccionarip.values()))
-'''
+    fitxerOut.write("Paraula: " + str(key) + "\t\t\t\tValor: " + str(value) + "\n")
 
-fitxer.close()
+d = path.dirname(__file__)
+
+# Read the whole text.
+text = open(path.join(d, 'textObama.txt')).read()
+
+wc = WordCloud(background_color="white", max_words=2000)
+# generate word cloud
+wc.generate(text)
+
+# store to file
+wc.to_file(path.join(d, "obama.png"))
+
+# show
+plt.imshow(wc)
+plt.axis("off")
+plt.show()
+
 fitxerOut.close()
