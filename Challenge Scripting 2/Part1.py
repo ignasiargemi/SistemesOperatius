@@ -141,4 +141,5 @@ plt.imshow(wc)
 plt.axis("off")
 plt.show()
 
+fitxer.close()
 fitxerOut.close()
