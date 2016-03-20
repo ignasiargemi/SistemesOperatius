@@ -33,11 +33,11 @@ else:
                     llegirTipus = False
 
                 if llegirPais:
-                    if paisos.has_key(paraula):
-                        paisos[paraula] += 1
+                    if paisos.has_key(paraula.lower()):
+                        paisos[paraula.lower()] += 1
                     else:
-                        paisos.get(paraula)
-                        paisos[paraula] = 1
+                        paisos.get(paraula.lower())
+                        paisos[paraula.lower()] = 1
                     llegirPais = False
 
                 if paraula == "country":
@@ -59,8 +59,7 @@ else:
     else:
         worldmap_chart = pygal.maps.world.World()
         worldmap_chart.title = 'Mapamundi dels atacs'
-
-        for pais,num in paisos.iteritems():
-            worldmap_chart.add(pais, [(pais.lower(), num)])
+        
+        worldmap_chart.add("Paisos", paisos)
 
         worldmap_chart.render_in_browser()
