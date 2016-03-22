@@ -4,7 +4,7 @@ from os import path
 import numpy as np
 
 # Declaracio de variables
-nom = raw_input("Digam el nom del fitxer d'entrada:\n(Sense Extencio)\n")
+nom = raw_input("Digam el nom del fitxer d'entrada:\n(Sense Extencio//S'ha d'escollir un fitxer .txt)\n")
 fitxer = open(nom + ".txt", "r")
 fitxerOut = open(nom + ".OUT.txt","w")
 numeroLinies=0
@@ -101,7 +101,7 @@ fitxerOut.write("4. Promig de lletres en el document: \n")
 for key, value in MapDeLletres.iteritems():
     fitxerOut.write("Caracter: " + str(key) + " Valor: " + str(value) + "\n")
 
-histLletres = pygal.Bar(title='Caracters utilitzats en el text')
+histLletres = pygal.Pie(title='Caracters utilitzats en el text')
 
 for val in llet:
 	k = val[0]
@@ -111,7 +111,7 @@ histLletres.render_in_browser()
 
 fitxerOut.write("\n5. Promig de longitud de paraules en el document: " + str(mitjanaCaracXPar)+ "\n")
 
-histLong = pygal.Bar(title='Longitud de les paraules')
+histLong = pygal.HoritzontalBar(title='Longitud de les paraules')
 for val in vecLongPar:
     k = val[0]
     v = val[1]

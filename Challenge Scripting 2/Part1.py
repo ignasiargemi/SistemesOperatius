@@ -101,7 +101,7 @@ fitxerOut.write("4. Promig de lletres en el document: \n")
 for key, value in MapDeLletres.iteritems():
     fitxerOut.write("Caracter: " + str(key) + " Valor: " + str(value) + "\n")
 
-histLletres = pygal.Bar(title='Caracters utilitzats en el text')
+histLletres = pygal.Pie(title='Caracters utilitzats en el text')
 
 for val in llet:
     k = val[0]
@@ -111,7 +111,7 @@ histLletres.render_in_browser()
 
 fitxerOut.write("\n5. Promig de longitud de paraules en el document: " + str(mitjanaCaracXPar)+ "\n")
 
-histLong = pygal.Bar(title='Longitud de les paraules')
+histLong = pygal.HorizontalBar(title='Longitud de les paraules')
 for val in vecLongPar:
     k = val[0]
     v = val[1]
