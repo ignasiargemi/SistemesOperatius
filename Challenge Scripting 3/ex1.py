@@ -84,7 +84,7 @@ else:
         if vulnerabilitats.has_key(vulner):
             worldmap_chart = pygal.maps.world.World()
             worldmap_chart.title = 'Mapamundi dels atacs'
-            worldmap_chart.add("Paisos", vulnerabilitats[vulner])
+            worldmap_chart.add(vulner, vulnerabilitats[vulner])
             worldmap_chart.render_in_browser()
         else:
             print("No existeix un vulnerabilitat amb nom " +  vulner)

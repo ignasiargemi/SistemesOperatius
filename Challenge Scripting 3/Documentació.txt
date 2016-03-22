@@ -8,6 +8,6 @@ Aquest script realitza les següents accions:
 
 -l Retorna una llista amb totes les diferents vulnerabilitats per la consola
 
--m VULNERABILITAT Retorna un fitxer html que s'obra automaticament quan escollim aquesta opció. A dins hi ha un mapa mundial on hi apareixen pintats amb intensitat gradual tots els països que han patit atacs. És a dir, el país que en pateix més està pintat amb un color més intens que el que n'ha patit menys.
+-m VULNERABILITAT Retorna un fitxer html que s'obra automaticament quan escollim aquesta opció. A dins hi ha un mapa mundial on hi apareixen pintats amb intensitat gradual tots els països que han patit el tipus d'atac indicat. És a dir, el país que en pateix més està pintat amb un color més intens que el que n'ha patit menys.
 
--t VULNERABILITAT Retorna un fitxer html que queda guardat a la carpeta on està guardat l'script "ex1.py" on hi podem trobar una taula amb el tipus d'atacs que s'han registrat i el número de vegades que s'han repetit.
+-t VULNERABILITAT Retorna un fitxer html que queda guardat a la carpeta on està guardat l'script "ex1.py" on hi podem trobar una taula amb tots els països que han patit l'atac que hem introduït previament i el número de vegades que s'han repetit.
