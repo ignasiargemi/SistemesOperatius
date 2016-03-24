@@ -31,7 +31,8 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "US: TCPecho <ip_servidor> <port>\n");
     exit(1);}
     /*Creamos socket*/
-    if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
+
+    if ((sock = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
     err_sys("errpr socket");}
 
 
@@ -40,6 +41,8 @@ int main(int argc, char *argv[]) {
     echoArbitre.sin_family = AF_INET;                  /* Internet/IP */
     echoArbitre.sin_addr.s_addr = inet_addr(argv[1]);  /* IP address */
     echoArbitre.sin_port = htons(atoi(argv[2]));       /* server port */
+
+    //sem_post(JA1);
 
     /* establecemos conexion con Arbitro */
     if (connect(sock,(struct sockaddr *) &echoArbitre,sizeof(echoArbitre)) < 0) {
@@ -50,7 +53,7 @@ int main(int argc, char *argv[]) {
 
     while(1){
         
-        
+        //sem_wait(AJ1);
         if ((read(sock, &jugador1, sizeof(jugador1))) < 0) {
         err_sys("error recepcion");}
 
@@ -86,10 +89,7 @@ int main(int argc, char *argv[]) {
  
         printf("Tirada: %i - Suma: %i\n", tirada, suma);
         
-        
-
-        if (connect(sock,(struct sockaddr *) &echoArbitre,sizeof(echoArbitre)) < 0) {
-            err_sys("error connect");}
+        //sem_post(JA1);
     }
 
     printf("Final Jugador 1!\n");
