@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
   jug2B.sin_addr.s_addr = htonl(INADDR_ANY);   /* Any IP address tomara cualquiera de les IP del servidor*/
   jug2B.sin_port = htons(atoi(argv[4]));       /* server port */
   
-  /* hacemos bind del puerto para poder recibir mensaje */
+  //Fem bind per poder llegir la informació dels ports
   jug1Alen = sizeof(jug1A);
   if (bind(sock1, (struct sockaddr *) &jug1A, jug1Alen) < 0) {
     err_sys("error bind jug1A");
@@ -92,9 +92,9 @@ int main(int argc, char *argv[]) {
     err_sys("error bind jug2B");
   }
 
-  /* bucle infinito */
+  /* bucle infinit */
   while (1) {
-    /* recibe mensaje del cliente */
+    //Rebem missatges dels jugadors
     jug1Alen = sizeof(jug1A);
     if ((received1 = recvfrom(sock1, buffer, BUFFSIZE, 0,(struct sockaddr *) &jug1A,&jug1Alen)) < 0) {
       err_sys("error lectura");
@@ -124,8 +124,8 @@ int main(int argc, char *argv[]) {
     if ((numJug1+numJug2) == apostaJug2) ++marcadorJug2;
 
     fprintf(stderr, "Marcador del joc: %i - %i\n", marcadorJug1,marcadorJug2);
-    /* echo del mensahe hacia cliente */
-
+  
+    //Retorn del marcador als jugadors
     sprintf(buffer, "%d", marcadorJug1);
     if (sendto(sock1, buffer, received1, 0,(struct sockaddr *) &jug1A,sizeof(jug1A)) != received1) {
       err_sys("error escriptura");
