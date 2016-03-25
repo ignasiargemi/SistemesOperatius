@@ -117,6 +117,9 @@ int main(int argc, char *argv[]) {
     numJug2 = atoi(buffer3);
     apostaJug2 = atoi(buffer4);
 
+    printf("Jugador 1:\nnúmero: %i, aposta: %i\n", numJug1, apostaJug1);
+    printf("Jugador 2:\nnúmero: %i, aposta: %i\n", numJug2, apostaJug2);
+
     if ((numJug1+numJug2) == apostaJug1) ++marcadorJug1;
     if ((numJug1+numJug2) == apostaJug2) ++marcadorJug2;
 

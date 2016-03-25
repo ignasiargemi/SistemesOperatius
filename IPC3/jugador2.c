@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
         ++contador;
         //Enviem les dades a l'arbitre
         tirada = -1;
+        //Número
         do {
             printf("Ronda %d: quin número vols posar?(0,1,2,3)\n", contador);
             fgets(buffer,BUFFSIZE-1,stdin);
