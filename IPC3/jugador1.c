@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     char buffer2[BUFFSIZE];
     unsigned int echolen, clientlen, echolen2;
     int received = 0, received2 = 0;
-    int contador;
+    int contador,tirada;
 
     int marcadorJug1 = 0;
     int marcadorJug2 = 0;
@@ -50,19 +50,28 @@ int main(int argc, char *argv[]) {
     while(1) {
         ++contador;
         //Enviem les dades a l'arbitre
-        //Jugador 1
+        //Número
         buffer[0] = '\0';        /* \0 */
-        printf("Ronda %d: quin número vols posar?\n", contador);
-        fgets(buffer,BUFFSIZE-1,stdin);
+        tirada = -1;
+        do {
+            printf("Ronda %d: quin número vols posar?(0,1,2,3)\n", contador);
+            fgets(buffer,BUFFSIZE-1,stdin);
+            tirada = atoi(buffer);
+        } while(tirada>3 || tirada < 0);
+
         echolen = strlen(buffer)+1;
         if (sendto(sock1, buffer, echolen, 0,(struct sockaddr *) &jug1A,sizeof(jug1A)) != echolen) {
             err_sys("error en escriptura1");
         }
 
-        //Jugador 2
+        //Aposta
         buffer2[0] = '\0';        /* \0 */
-        printf("Ronda %d: quina és la vostra aposta?\n", contador);
-        fgets(buffer2,BUFFSIZE-1,stdin);
+        tirada = -1;
+        do {
+            printf("Ronda %d: quina és la vostra aposta?(0,1,2,3,4,5,6)\n", contador);
+            fgets(buffer2,BUFFSIZE-1,stdin);
+            tirada = atoi(buffer2);
+        } while(tirada>6 || tirada < 0);
         echolen2 = strlen(buffer2)+1;
         if (sendto(sock2, buffer2, echolen2, 0,(struct sockaddr *) &jug1B,sizeof(jug1B)) != echolen2) {
             err_sys("error en escriptura");
