@@ -1,98 +1,96 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <sys/ipc.h>
-
-
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <netinet/in.h>
 #define BUFFSIZE 20
 
-void err_sys(const char* cadena){ perror(cadena);exit(1);} 
-
+void err_sys(char *mess) { perror(mess); exit(1); }
 
 int main(int argc, char *argv[]) {
+    int sock1, sock2;
+    struct sockaddr_in jug1A;
+    struct sockaddr_in jug1B;
 
-    int sock;
-    struct sockaddr_in echoArbitre;
     char buffer[BUFFSIZE];
-    unsigned int echolen;
-    int bytes = 0;
+    char buffer2[BUFFSIZE];
+    unsigned int echolen, clientlen, echolen2;
+    int received = 0, received2 = 0;
+    int contador;
 
-      
-    int     jugador1, jugador2;
-    int     tirada, suma;
+    int marcadorJug1 = 0;
+    int marcadorJug2 = 0;
 
-    if (argc != 3) {
-    fprintf(stderr, "US: TCPecho <ip_servidor> <port>\n");
-    exit(1);}
-    /*Creamos socket*/
-
-    if ((sock = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
-    err_sys("errpr socket");}
-
-
-    /* preparamos sockaddr_in */
-    memset(&echoArbitre, 0, sizeof(echoArbitre));       /* borra memoria */
-    echoArbitre.sin_family = AF_INET;                  /* Internet/IP */
-    echoArbitre.sin_addr.s_addr = inet_addr(argv[1]);  /* IP address */
-    echoArbitre.sin_port = htons(atoi(argv[2]));       /* server port */
-
-    //sem_post(JA1);
-
-    /* establecemos conexion con Arbitro */
-    if (connect(sock,(struct sockaddr *) &echoArbitre,sizeof(echoArbitre)) < 0) {
-                  err_sys("error connect");
+    if (argc != 4) {
+        fprintf(stderr, "US: %s <ip_servidor> <port1> <port2>\n", argv[0]);
+        exit(1);
+    }
+    //Creem el socket UDP
+    if ((sock1 = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
+        err_sys("error crear socket");
+    }
+    if ((sock2 = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
+        err_sys("error crear socket");
     }
 
-    
+    /* preparamos sockaddr_in para servidor */
+    memset(&jug1A, 0, sizeof(jug1A));       /* borramos la zona de memoria */
+    jug1A.sin_family = AF_INET;                  /* Internet/IP */
+    jug1A.sin_addr.s_addr = inet_addr(argv[1]);  /* IP address */
+    jug1A.sin_port = htons(atoi(argv[2]));       /* server port */
 
-    while(1){
-        
-        //sem_wait(AJ1);
-        if ((read(sock, &jugador1, sizeof(jugador1))) < 0) {
-        err_sys("error recepcion");}
+    memset(&jug1B, 0, sizeof(jug1B));       /* borramos la zona de memoria */
+    jug1B.sin_family = AF_INET;                  /* Internet/IP */
+    jug1B.sin_addr.s_addr = inet_addr(argv[1]);  /* IP address */
+    jug1B.sin_port = htons(atoi(argv[3]));
 
-        if ((read(sock, &jugador2, sizeof(jugador2))) < 0) {
-        err_sys("error recepcion");}
-        
-        
-        printf("Marcador: %i - ",jugador1);
-        printf("%i\n",jugador2);
-        
-        if (jugador1 >= 3 || jugador2 >= 3) break; //Final
-        
-
-        do{
-            printf("Escriu el valor de la teva tirada:\n(0-3)\n");
-            scanf("%i",&tirada);
-
-        }while(tirada>3 || tirada < 0);
-
-        
-        if (write(sock, &tirada, sizeof(int)) != sizeof(int)) {
-            err_sys("error al enviar la informacio a servidor ");
+    contador = 0;
+    while(1) {
+        ++contador;
+        //Enviem les dades a l'arbitre
+        //Jugador 1
+        buffer[0] = '\0';        /* \0 */
+        printf("Ronda %d: quin número vols posar?\n", contador);
+        fgets(buffer,BUFFSIZE-1,stdin);
+        echolen = strlen(buffer)+1;
+        if (sendto(sock1, buffer, echolen, 0,(struct sockaddr *) &jug1A,sizeof(jug1A)) != echolen) {
+            err_sys("error en escriptura1");
         }
 
-        do {
-            printf("Quina es la teva suma/aposta:\n(0-6)\n");
-            scanf("%i",&suma);
-        }while (suma < 0 || suma > 6);
-
-        if (write(sock, &suma, sizeof(int)) != sizeof(int)) {
-            err_sys("error al enviar la informacio a servidor ");
+        //Jugador 2
+        buffer2[0] = '\0';        /* \0 */
+        printf("Ronda %d: quina és la vostra aposta?\n", contador);
+        fgets(buffer2,BUFFSIZE-1,stdin);
+        echolen2 = strlen(buffer2)+1;
+        if (sendto(sock2, buffer2, echolen2, 0,(struct sockaddr *) &jug1B,sizeof(jug1B)) != echolen2) {
+            err_sys("error en escriptura");
         }
- 
-        printf("Tirada: %i - Suma: %i\n", tirada, suma);
+
+        //Rebem les dades de l'arbitre
+        clientlen = sizeof(jug1A);
+        if ((received = recvfrom(sock1, buffer, BUFFSIZE, 0,(struct sockaddr *) &jug1A,&clientlen)) != echolen) {
+            err_sys("error en lectura1A");
+        }
+        buffer[received] = '\0';
+        marcadorJug1 = atoi(buffer);     
+       
+        clientlen = sizeof(jug1B);
+        if ((received2 = recvfrom(sock2, buffer2, BUFFSIZE, 0,(struct sockaddr *) &jug1B,&clientlen)) != echolen2) {
+            err_sys("error en lectura1B");
+        }
+        buffer2[received2] = '\0';
+        marcadorJug2 = atoi(buffer2);       
         
-        //sem_post(JA1);
+        printf("Marcador: %i - %i \n", marcadorJug1, marcadorJug2);
+        if (marcadorJug1>= 3 || marcadorJug2>=3) break;
     }
-
-    printf("Final Jugador 1!\n");
-    close(sock);
+    printf("Final de la partida\n");
+    if (marcadorJug1 == marcadorJug2) printf("Hi ha hagut un empat.\n");
+    else if (marcadorJug1 > marcadorJug2) printf("Heu guanyat!\n");
+    else printf("Heu perdut!\n");
+    close(sock1);
+    close(sock2);
     exit(0);
 }
